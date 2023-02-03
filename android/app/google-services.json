@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "717166661497",
+    "project_id": "emeaproject-a72a5",
+    "storage_bucket": "emeaproject-a72a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717166661497:android:50f6857a66086810ff29a8",
+        "android_client_info": {
+          "package_name": "com.example.oopleproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717166661497-dkqfhrr4c2jqovrcn050ndmoqcgtg52h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgj5O5qgUePN18pM_DWUiKPKk1_e0Vprk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717166661497-dkqfhrr4c2jqovrcn050ndmoqcgtg52h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "717166661497-v8unl5n1neuub93c3epbf1odvitgcil7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oopleproject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

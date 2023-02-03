@@ -7,7 +7,7 @@ import 'package:oopleproject/components/user/venueDetails.dart';
 
 //double width = MediaQuery.of(context).size.width;
 
-Color backgroundColor = Colors.blue.shade50;
+//Color backgroundColor = Colors.blue.shade50;
 Color textColor = Colors.black54;
 Color subColor = Colors.black26;
 Color mainColor = Colors.white;
@@ -15,9 +15,11 @@ Color sportsbuttonColor = Colors.greenAccent.shade100;
 
 bool lightTheme = true;
 
+int currentIndex = 0;
+
 void themeChange(){
   if(lightTheme){
-    backgroundColor = Colors.blue.shade50;
+    //backgroundColor = Colors.blue.shade50;
     textColor = Colors.black54;
     subColor = Colors.black26;
     mainColor = Colors.white;
@@ -29,7 +31,7 @@ void themeChange(){
 
   }
   else{
-    backgroundColor = Colors.black;
+    //backgroundColor = Colors.black;
     textColor = Colors.white;
     subColor = Colors.blue.shade50;
     mainColor = Colors.black;

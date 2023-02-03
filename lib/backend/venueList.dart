@@ -3,6 +3,7 @@ import 'package:oopleproject/backend/datamodels/venuedatamodel.dart';
 
 List<venueDatamodel> venueList = [];
 
-void addVenue(String vname, String vlocation, String vimage, String vprice, String vcategory, int vid){
-  venueList.add(venueDatamodel(vname, vlocation, vimage, vprice, vcategory, vid));
+void addVenue(String venueName, String venueLocation, String venueImage, String venuePrice, String venueCategory, bool lockers, bool canteen, bool changingroom, bool washroom, bool wifi, int venueId){
+  venueList.add(venueDatamodel(venueName, venueLocation, venueImage,
+      venuePrice, venueCategory, lockers, canteen, changingroom, washroom, wifi, venueId));
 }

@@ -1,42 +1,29 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:oopleproject/backend/venueList.dart';
-import 'package:oopleproject/components/user/bookingPage.dart';
-import 'package:oopleproject/theme.dart';
+import 'package:oopleproject/backend/orderList.dart';
+import 'package:oopleproject/components/user/bottomNavigationbar.dart';
+import 'package:oopleproject/components/user/cancelConfirm.dart';
+import 'package:async/async.dart';
 
-import '../../backend/orderList.dart';
+import '../../backend/venueList.dart';
 import '../../importedTheme.dart';
+import '../../theme.dart';
+import 'package:oopleproject/components/user/transactions.dart';
 
-class venueDetails extends StatefulWidget {
-  //const venueDetails({Key? key}) : super(key: key);
+class orders extends StatefulWidget {
+  //orders({Key? key}) : super(key: key);
 
   int val = 0;
-  int id = 0;
-  venueDetails(this.id){
-    for(var i=0; i<venueList.length; i++){
-      if(venueList[i].venueId == id){
-        val = i;
-        break;
-      }
-    }
-  }
-
+  orders(this.val);
 
   @override
-  State<venueDetails> createState() => _venueDetailsState();
+  State<orders> createState() => _ordersState();
 }
 
-
-class _venueDetailsState extends State<venueDetails> {
+class _ordersState extends State<orders> {
   @override
-
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.black.withOpacity(0.03)));
-    });
     setState(() {
       textlockers = false;
       textcanteen = false;
@@ -52,15 +39,13 @@ class _venueDetailsState extends State<venueDetails> {
   bool textwashroom = false;
   bool textwifi = false;
 
+
+
   Widget build(BuildContext context) {
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarColor: Colors.black.withOpacity(0.03)));
-
     var newVal = widget.val;
     double height = MediaQuery.of(context).size.width;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-
       backgroundColor: mainColor,
       floatingActionButtonLocation: FloatingActionButtonLocation.miniStartTop,
       floatingActionButton: Padding(
@@ -68,13 +53,16 @@ class _venueDetailsState extends State<venueDetails> {
         child: CircleAvatar(
           radius: 20,
           child: FloatingActionButton(
-            backgroundColor: Color(0xffF5F9FF),
+            backgroundColor: Colors.white,
             child: Icon(
               Icons.arrow_back_ios_rounded,
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              setState(() {
+                SetCurrentIndex(1);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>bottomNavigationbar()));
+              });
             },
           ),
         ),
@@ -85,13 +73,13 @@ class _venueDetailsState extends State<venueDetails> {
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         child: ElevatedButton(onPressed: () {
           setState(() {
-            addOrder(venueList[newVal].venueName, venueList[newVal].venueLocation, venueList[newVal].venueImage, venueList[newVal].venuePrice, venueList[newVal].venueCategory, venueList[newVal].lockers, venueList[newVal].canteen, venueList[newVal].changingroom, venueList[newVal].washroom, venueList[newVal].wifi , venueList[newVal].venueId, "20-12-22",  "10 pm");
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>BookingPage()));
-          });
+            //Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>cancelConfirm(newVal)));
 
-        }, child: Text('Book Now'),
+          });
+        }, child: Text('Cancel Booking'),
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
+            backgroundColor: MaterialStateProperty.all(Colors.red.shade400),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
           ),
         ),
@@ -103,29 +91,7 @@ class _venueDetailsState extends State<venueDetails> {
             children: [
               Stack(
                 children: [
-                  CachedNetworkImage(
-
-                    imageUrl: venueList[newVal].venueImage,
-                    height: 325,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      height: 200,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(scale: 2, image: AssetImage('assets/images/imageloading.gif'),fit: BoxFit.fill, opacity: 0.6),
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20)),
-                      ),
-                    ),
-                  ),
+                  Image.network(Listorders[newVal].venueImage, fit: BoxFit.fill, height: 325,),
                   Positioned(child: Container(
                     height: 25,
                     width: width,
@@ -138,7 +104,7 @@ class _venueDetailsState extends State<venueDetails> {
                           bottomLeft: Radius.circular(0)),
                     ),
                   ),
-                  top: 306,
+                    top: 306,
                   ),
 
 
@@ -148,7 +114,7 @@ class _venueDetailsState extends State<venueDetails> {
                     child: Column(
                       children: [
                         Center(
-                          child: Text(venueList[newVal].venueName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                          child: Text(Listorders[newVal].venueName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
                         ),
                         SizedBox(height: 35,),
                         Row(
@@ -156,7 +122,7 @@ class _venueDetailsState extends State<venueDetails> {
                             SizedBox(width: 10,),
                             Icon(Icons.location_on, size: 20, color: Colors.blueAccent,),
                             SizedBox(width: 10,),
-                            Text(venueList[newVal].venueLocation, style: TextStyle(fontSize: 15, color: textColor),),
+                            Text(Listorders[newVal].venueLocation, style: TextStyle(fontSize: 15, color: textColor),),
                           ],
                         ),
                         SizedBox(height: 15,),
@@ -165,7 +131,7 @@ class _venueDetailsState extends State<venueDetails> {
                             SizedBox(width: 10,),
                             Icon(Icons.price_change_rounded, size: 20, color: Colors.blueAccent,),
                             SizedBox(width: 10,),
-                            Text('Rs. 1500 / hr', style: TextStyle(fontSize: 15, color: textColor),),
+                            Text(Listorders[newVal].venuePrice, style: TextStyle(fontSize: 15, color: textColor),),
                           ],
                         ),
                         SizedBox(height: 30,),
@@ -219,7 +185,7 @@ class _venueDetailsState extends State<venueDetails> {
                         SizedBox(height: 20,),
                         Row(
                           children: [
-                            if(venueList[newVal].wifi)
+                            if(orderList[newVal].wifi)
                             Container(
                               height: 70,
                               width: width/6.6,
@@ -227,9 +193,7 @@ class _venueDetailsState extends State<venueDetails> {
                                 color: backgroundColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: IconButton(
-                                splashRadius: 1,
-                                onPressed: () {
+                              child: IconButton(onPressed: () {
                                 setState(() {
                                   textwifi = !textwifi;
                                 });
@@ -238,8 +202,7 @@ class _venueDetailsState extends State<venueDetails> {
                               ),
                             ),
                             SizedBox(width: 13,),
-
-                            if(venueList[newVal].washroom)
+                            if(orderList[newVal].washroom)
                             Container(
                               height: 70,
                               width: width/6.6,
@@ -247,9 +210,7 @@ class _venueDetailsState extends State<venueDetails> {
                                 color: backgroundColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: IconButton(
-                                splashRadius: 1,
-                                onPressed: () {
+                              child: IconButton(onPressed: () {
                                 setState(() {
                                   textwashroom = !textwashroom;
                                 });
@@ -258,8 +219,7 @@ class _venueDetailsState extends State<venueDetails> {
                               ),
                             ),
                             SizedBox(width: 13,),
-
-                            if(venueList[newVal].changingroom)
+                            if(orderList[newVal].changingroom)
                             Container(
                               height: 70,
                               width: width/6.6,
@@ -267,9 +227,7 @@ class _venueDetailsState extends State<venueDetails> {
                                 color: backgroundColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: IconButton(
-                                splashRadius: 1,
-                                onPressed: () {
+                              child: IconButton(onPressed: () {
                                 setState(() {
                                   textchangingroom = !textchangingroom;
                                 });
@@ -278,8 +236,7 @@ class _venueDetailsState extends State<venueDetails> {
                               ),
                             ),
                             SizedBox(width: 13,),
-
-                            if(venueList[newVal].lockers)
+                            if(orderList[newVal].lockers)
                             Container(
                               height: 70,
                               width: width/6.6,
@@ -287,9 +244,7 @@ class _venueDetailsState extends State<venueDetails> {
                                 color: backgroundColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: IconButton(
-                                splashRadius: 1,
-                                onPressed: () {
+                              child: IconButton(onPressed: () {
                                 setState(() {
                                   textlockers = !textlockers;
                                 });
@@ -298,8 +253,7 @@ class _venueDetailsState extends State<venueDetails> {
                               ),
                             ),
                             SizedBox(width: 13,),
-
-                            if(venueList[newVal].canteen)
+                            if(orderList[newVal].canteen)
                             Container(
                               height: 70,
                               width: width/6.6,
@@ -307,10 +261,7 @@ class _venueDetailsState extends State<venueDetails> {
                                 color: backgroundColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: IconButton(
-
-                                splashRadius: 1,
-                                onPressed: () {
+                              child: IconButton(onPressed: () {
                                 setState(() {
                                   textcanteen = !textcanteen;
                                 });
